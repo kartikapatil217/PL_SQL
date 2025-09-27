@@ -1,0 +1,171 @@
+mysql> create database studentinfo;
+ERROR 1007 (HY000): Can't create database 'studentinfo'; database exists
+mysql> create database student;
+Query OK, 1 row affected (0.125 sec)
+
+mysql> use studenr;
+ERROR 1049 (42000): Unknown database 'studenr'
+mysql> use student;
+Database changed
+mysql> create table student(rollno int primary key, name varchar(20),class varchar(10));
+Query OK, 0 rows affected (0.290 sec)
+
+mysql> create table fees(tid int primary key,rollno  int,feesamt float,pdate date);
+Query OK, 0 rows affected (0.300 sec)
+
+mysql> insert into student values('101','Ravi','TE');
+Query OK, 1 row affected (0.160 sec)
+
+mysql>  insert into student values('102','Seema','TE');
+Query OK, 1 row affected (0.088 sec)
+
+mysql>  insert into student values('103','Diya','TE');
+Query OK, 1 row affected (0.087 sec)
+
+mysql>  insert into student values('104','Rahul','SE');
+Query OK, 1 row affected (0.086 sec)
+
+mysql> insert into fees values(1000,101,50000,'2025-05-12');
+Query OK, 1 row affected (0.096 sec)
+
+mysql> insert into fees values(1001,102,45000,'2025-05-12');
+Query OK, 1 row affected (0.088 sec)
+
+mysql> insert into fees values(1002,103,45000,'2025-05-12');
+Query OK, 1 row affected (0.088 sec)
+
+mysql> select * from student;
++--------+-------+-------+
+| rollno | name  | class |
++--------+-------+-------+
+|    101 | Ravi  | TE    |
+|    102 | Seema | TE    |
+|    103 | Diya  | TE    |
+|    104 | Rahul | SE    |
++--------+-------+-------+
+4 rows in set (0.076 sec)
+
+mysql> select * from fees;
++------+--------+---------+------------+
+| tid  | rollno | feesamt | pdate      |
++------+--------+---------+------------+
+| 1000 |    101 |   50000 | 2025-05-12 |
+| 1001 |    102 |   45000 | 2025-05-12 |
+| 1002 |    103 |   45000 | 2025-05-12 |
++------+--------+---------+------------+
+3 rows in set (0.006 sec)
+
+mysql> insert into fees values(1003,104,60000,'2025-05-22');
+Query OK, 1 row affected (0.090 sec)
+
+mysql> insert into student values('105','Nikita','SE');
+Query OK, 1 row affected (0.085 sec)
+
+mysql> insert into student values('106','Sam','SE');
+Query OK, 1 row affected (0.089 sec)
+
+mysql> select name,class,feesamt,pdate from student inner join fees on student.rollno=fees.rollno;
++-------+-------+---------+------------+
+| name  | class | feesamt | pdate      |
++-------+-------+---------+------------+
+| Ravi  | TE    |   50000 | 2025-05-12 |
+| Seema | TE    |   45000 | 2025-05-12 |
+| Diya  | TE    |   45000 | 2025-05-12 |
+| Rahul | SE    |   60000 | 2025-05-22 |
++-------+-------+---------+------------+
+4 rows in set (0.077 sec)
+
+mysql> select name,class,feesamt,pdate from student right join fees on student.rollno=fees.rollno;
++-------+-------+---------+------------+
+| name  | class | feesamt | pdate      |
++-------+-------+---------+------------+
+| Ravi  | TE    |   50000 | 2025-05-12 |
+| Seema | TE    |   45000 | 2025-05-12 |
+| Diya  | TE    |   45000 | 2025-05-12 |
+| Rahul | SE    |   60000 | 2025-05-22 |
++-------+-------+---------+------------+
+4 rows in set (0.005 sec)
+
+mysql> select name,class,feesamt,pdate from student full join fees;
++--------+-------+---------+------------+
+| name   | class | feesamt | pdate      |
++--------+-------+---------+------------+
+| Ravi   | TE    |   60000 | 2025-05-22 |
+| Ravi   | TE    |   45000 | 2025-05-12 |
+| Ravi   | TE    |   45000 | 2025-05-12 |
+| Ravi   | TE    |   50000 | 2025-05-12 |
+| Seema  | TE    |   60000 | 2025-05-22 |
+| Seema  | TE    |   45000 | 2025-05-12 |
+| Seema  | TE    |   45000 | 2025-05-12 |
+| Seema  | TE    |   50000 | 2025-05-12 |
+| Diya   | TE    |   60000 | 2025-05-22 |
+| Diya   | TE    |   45000 | 2025-05-12 |
+| Diya   | TE    |   45000 | 2025-05-12 |
+| Diya   | TE    |   50000 | 2025-05-12 |
+| Rahul  | SE    |   60000 | 2025-05-22 |
+| Rahul  | SE    |   45000 | 2025-05-12 |
+| Rahul  | SE    |   45000 | 2025-05-12 |
+| Rahul  | SE    |   50000 | 2025-05-12 |
+| Nikita | SE    |   60000 | 2025-05-22 |
+| Nikita | SE    |   45000 | 2025-05-12 |
+| Nikita | SE    |   45000 | 2025-05-12 |
+| Nikita | SE    |   50000 | 2025-05-12 |
+| Sam    | SE    |   60000 | 2025-05-22 |
+| Sam    | SE    |   45000 | 2025-05-12 |
+| Sam    | SE    |   45000 | 2025-05-12 |
+| Sam    | SE    |   50000 | 2025-05-12 |
++--------+-------+---------+------------+
+24 rows in set, 1 warning (0.076 sec)
+
+mysql> select rollno from fees where feesamt>45000;
++--------+
+| rollno |
++--------+
+|    101 |
+|    104 |
++--------+
+2 rows in set (0.005 sec)
+
+mysql> select name from student where rollno in (101,104);
++-------+
+| name  |
++-------+
+| Ravi  |
+| Rahul |
++-------+
+2 rows in set (0.065 sec)
+
+mysql> select name from student where rollno in(slect rollno from fees where feesamt>45000);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'rollno from fees where feesamt>45000)' at line 1
+mysql> select name from student where rollno in(select rollno from fees where feesamt>45000);
++-------+
+| name  |
++-------+
+| Ravi  |
+| Rahul |
++-------+
+2 rows in set (0.074 sec)
+
+mysql> select rollno from fees;
++--------+
+| rollno |
++--------+
+|    101 |
+|    102 |
+|    103 |
+|    104 |
++--------+
+4 rows in set (0.004 sec)
+
+mysql> select name from student where rollno not in(select rollno from fees where feesamt>45000);
++--------+
+| name   |
++--------+
+| Seema  |
+| Diya   |
+| Nikita |
+| Sam    |
++--------+
+4 rows in set (0.009 sec)
+
+mysql>
